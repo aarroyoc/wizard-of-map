@@ -9,7 +9,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>("menu");
   return (
     <div className="App">
-      {screen === "menu" && <Menu/>}
+      {screen === "menu" && <Menu onScreenChange={(newScreen: Screen) => setScreen(newScreen)}/>}
       {screen === "game" && <Game/>}
     </div>
   );
