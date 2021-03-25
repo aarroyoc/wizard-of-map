@@ -3,10 +3,12 @@ import { CityId } from "../models/City";
 import { Index } from "../models/Index";
 import { Round } from "../models/Round";
 import { DataService } from "../services/DataService";
+import "./Game.css";
 
 type GameStage = "sat" | "map";
 
 function Game(){
+    const waitMs = 2000;
     const dataService = new DataService();
     const [cityIds, setCityIds] = useState<Set<CityId>>(new Set());
     const [index, setIndex] = useState<Index | null>(null);
@@ -25,8 +27,6 @@ function Game(){
     };
 
     const submitAnswer = (answer: CityId) => {
-        console.log(answer);
-        console.log(round?.win);
         if(answer === round?.win){
             alert("VICTORY!");
         } else {
@@ -47,24 +47,27 @@ function Game(){
         setRound(Round.randomRoundFromCityIds(cityIds));
         setTimeout(() => {
             setStage("map");
-        }, 2000);
+        }, waitMs);
     }
 
     if(round !== null && answers.length === 0){
         setAnswers(shuffleArray(round.others.concat([round.win])));
     }
 
-    return (<div>
-        {round && stage === "sat" &&
+    return (<div className="Game">
+        {round && stage === "sat" && (<>
+            <div className="timeBar"></div>
             <img src={`/data/${round.win}.jpg`}/>
-        }
-        {round && stage === "map" && (
-            <div>
+        </>)}
+        {round && stage === "map" && (<>
+            <p>Choose the correct map</p>
+            <div className="GameGrid">
+                
                 {answers.map((answer)=>{
                     return <img onClick={() => submitAnswer(answer)} src={`/data/${answer}.png`}/>;
                 })}
             </div>
-        )}
+        </>)}
     </div>);
 }
 export default Game;

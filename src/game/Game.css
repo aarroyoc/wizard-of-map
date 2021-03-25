@@ -1,0 +1,53 @@
+.Game{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.Game > h2 {
+    height: 12pt;
+}
+
+@media(orientation: landscape){
+    .Game > img {
+        height: 100%;
+    }
+}
+@media(orientation: portrait){
+    .Game > img {
+        width: 100%;
+    }
+}
+
+.timeBar {
+    background-color: gray;
+    width: 100%;
+    height: 1em;
+    animation-duration: 2s;
+    animation-name: disappear;
+}
+
+@keyframes disappear {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.GameGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1vmin;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameGrid > img {
+    width: 45vmin;
+}
