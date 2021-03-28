@@ -5,11 +5,13 @@ import { Round } from "../models/Round";
 import { DataService } from "../services/DataService";
 import "./Game.css";
 
-type GameStage = "sat" | "map";
+type GameStage = "sat" | "map" | "end";
 
 function Game(){
     const waitMs = 2000;
     const dataService = new DataService();
+    const [points, setPoints] = useState(0);
+    const [timerEnabled, setTimerEnabled] = useState(false);
     const [cityIds, setCityIds] = useState<Set<CityId>>(new Set());
     const [index, setIndex] = useState<Index | null>(null);
     const [round, setRound] = useState<Round | null>(null);
@@ -28,10 +30,20 @@ function Game(){
 
     const submitAnswer = (answer: CityId) => {
         if(answer === round?.win){
-            alert("VICTORY!");
+            setPoints(points + 1);
+            setRound(null);
+            setStage("sat");
         } else {
-            alert("FAIL!");
+            setStage("end");
         }
+    }
+
+    const startTimer = () => {
+        setTimeout(() => {
+            setStage("map");
+            setTimerEnabled(false);
+        }, waitMs);
+        setTimerEnabled(true);
     }
 
     useEffect(()=>{
@@ -44,29 +56,28 @@ function Game(){
     }, []);
 
     if(round === null && index !== null && cityIds.size > 0){
-        setRound(Round.randomRoundFromCityIds(cityIds));
-        setTimeout(() => {
-            setStage("map");
-        }, waitMs);
-    }
-
-    if(round !== null && answers.length === 0){
+        const round = Round.randomRoundFromCityIds(cityIds)
         setAnswers(shuffleArray(round.others.concat([round.win])));
+        setRound(round);
     }
 
     return (<div className="Game">
         {round && stage === "sat" && (<>
-            <div className="timeBar"></div>
-            <img src={`/data/${round.win}.jpg`}/>
+            <h2>Score: {points}</h2>
+            <div className={timerEnabled ? "timeBar" : ""}></div>
+            <img onLoad={() => startTimer()} src={`/data/${round.win}.jpg`}/>
         </>)}
         {round && stage === "map" && (<>
             <p>Choose the correct map</p>
             <div className="GameGrid">
-                
                 {answers.map((answer)=>{
                     return <img onClick={() => submitAnswer(answer)} src={`/data/${answer}.png`}/>;
                 })}
             </div>
+        </>)}
+        {stage === "end" && (<>
+            <h1>Game ended!</h1>
+            <h2>Score: {points}</h2>
         </>)}
     </div>);
 }
