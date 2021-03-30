@@ -77,7 +77,12 @@ function Game(){
         </>)}
         {stage === "end" && (<>
             <h1>Game ended!</h1>
-            <h2>Score: {points}</h2>
+            <h2>Final Score: {points}</h2>
+            
+            <a onClick={() => window.location.reload()}>Restart</a>
+            <div style={{height: "200px"}}></div>
+            <a href={`https://twitter.com/intent/tweet?text=My score on The Wizard of Map is ${points}&url=https://wizard-of-map.netlify.app/`}>Share your score on Twitter</a>
+            <small><a href="https://adrianistan.eu">&copy; Adrián Arroyo Calle 2021</a></small>
         </>)}
     </div>);
 }

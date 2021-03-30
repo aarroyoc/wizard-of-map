@@ -18,7 +18,7 @@ function Menu({onScreenChange}: Props){
             <a onClick={() => startGame()}>Start Game</a>
         </div>
         <div className="bottom">
-
+            <small><a href="https://adrianistan.eu">&copy; Adrián Arroyo Calle 2021</a></small>
         </div>
     </>);
 }

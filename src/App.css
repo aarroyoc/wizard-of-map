@@ -5,4 +5,7 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
+  background-color: #427885;
+  font-family: 'Syne Mono', monospace;
+  color: #D2EAE1;
 }
